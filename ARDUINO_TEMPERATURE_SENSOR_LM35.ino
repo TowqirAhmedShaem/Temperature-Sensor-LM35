@@ -5,11 +5,29 @@
  */
 int value;
 int tempPin =A0;
+int motorA1=9;
+int motorA2=10;
+int motorEN=11;
+
 void setup()
 {
  pinMode(tempPin,INPUT);
+ pinMode(motorA1,OUTPUT);
+ pinMode(motorA2,OUTPUT);
  Serial.begin(9600);
 }
+
+void motorforward()
+  {
+  digitalWrite(motorA1, HIGH);
+  digitalWrite(motorA2, LOW);
+  }
+void motorstop()
+  {
+  digitalWrite(motorA1, LOW);
+  digitalWrite(motorA2, LOW);
+  }
+
 void loop()
 {
 value = analogRead(tempPin);
@@ -22,5 +40,16 @@ Serial.print("*C    ");
 Serial.print(farenhite );
 Serial.print("*F");
 Serial.println();
-delay(1000);
+//delay(1000);
+ if(celcius<25){
+      motorstop(); // or analogWrite(motorEN, 0);
+   }
+ else if(celcius>25 && celcius < 40){
+   analogWrite(motorEN, 150);
+   motorforward();
+   }
+ else{
+   analogWrite(motorEN, 255); // Full speed
+   motorforward();
+}
 }
